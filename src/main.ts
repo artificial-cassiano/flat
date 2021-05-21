@@ -2,8 +2,8 @@ import * as core from '@actions/core'
 import { exec } from '@actions/exec'
 import { execSync } from 'child_process'
 import fetchHTTP from './backends/http'
-import fetchSQL from './backends/sql'
-import { getConfig, isHTTPConfig, isSQLConfig } from './config'
+
+import { getConfig, isHTTPConfig } from './config'
 import { diff } from './git'
 
 async function run(): Promise<void> {
@@ -25,9 +25,7 @@ async function run(): Promise<void> {
   if (isHTTPConfig(config)) {
     filename = await fetchHTTP(config)
     source = config.http_url
-  } else if (isSQLConfig(config)) {
-    filename = await fetchSQL(config)
-  } else {
+ else {
     // typescript should preclude us from ever being here
     // because config is HTTPConfig | SQLConfig
     // But to be on the safe side, blow up if execution
